@@ -1,0 +1,79 @@
+@stack = common global [646 x i30] zeroinitializer, align 32
+@base = common global i32 0
+@ret = common global i32 0
+
+define i32 @main() nounwind {
+entry:
+%retval = alloca i32
+%0 = getelementptr inbounds [646 x i30]* @stack, i32 0, i32 645
+
+%1 = getelementptr inbounds i30* %0, i32 -432
+%2 = load i32* @ret, align 4
+%3 = getelementptr inbounds i30* %1, i32 428
+store i32 %1, i32* %3
+%4 = load i32* @base, align 4
+%5 = getelementptr inbounds i30* %1, i32 424
+store i32 %3, i32* %5
+%6 = getelementptr inbounds i30* %1, i32 0
+
+%7 = add nsw i32 0, 1
+%8 = getelementptr inbounds i30* %6, i32 16
+store i32 %7, i32* %8
+br label %label-4
+
+label-4:
+%9 = getelementptr inbounds i30* %6, i32 16
+%10 = load i32* %9, align 4
+%11 = icmp slt i32 %10, 101
+%cmp = icmp ne i1 %11, false
+br i1 %cmp, label %label-1, label %label-2
+
+label-2:
+br label %label-3
+
+label-1:
+%12 = getelementptr inbounds i30* %6, i32 16
+%13 = load i32* %12, align 4
+%14 = add nsw i32 0, %13
+%15 = shl i32 %14, 2
+%16 = getelementptr inbounds i30* %6, i32 16
+%17 = getelementptr inbounds i30* %16, i32 %15
+%18 = getelementptr inbounds i30* %17, i32 8
+%19 = getelementptr inbounds i30* %6, i32 16
+%20 = load i32* %19, align 4
+%21 = add nsw i32 0, %20
+%22 = shl i32 %21, 2
+%23 = getelementptr inbounds i30* %6, i32 16
+%24 = getelementptr inbounds i30* %23, i32 %22
+%25 = getelementptr inbounds i30* %24, i32 8
+%26 = getelementptr inbounds i30* %25, i32 0
+%27 = load i32* %26, align 4
+%28 = add nsw i32 %27, 5
+%29 = getelementptr inbounds i30* %18, i32 0
+store i32 %28, i32* %29
+%30 = getelementptr inbounds i30* %6, i32 16
+%31 = load i32* %30, align 4
+%32 = add nsw i32 %31, 1
+%33 = add nsw i32 0, %32
+%34 = getelementptr inbounds i30* %6, i32 16
+store i32 %33, i32* %34
+br label %label-4
+
+label-3:
+%35 = add nsw i32 0, 0
+br label %label-5
+
+label-5:
+%36 = getelementptr inbounds i30* %6, i32 0
+%37 = getelementptr inbounds i30* %36, i32 428
+%38 = load i32* %37, align 4
+%39 = getelementptr inbounds i30* %36, i32 424
+%40 = load i32* %39, align 4
+%41 = getelementptr inbounds i30* %36, i32 432
+br label %return
+
+return:
+%retvall = load i32* %retval
+ret i32 %retvall
+}
+

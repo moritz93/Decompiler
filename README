@@ -1,0 +1,72 @@
+=================
+DECOMPILER README
+=================
+
+The decompiler takes a SimpleScalar disassembly file (.s), which is 
+then translated to a LLVM disassembly file (.ll). The .s file must 
+not contain any library subroutines. In order to handle the initialized 
+global memory properly, additionally, the corresponding binary file (.o) 
+has to be located in the same folder. The only external library is 
+jGraphT, that is already included in the .jar file. Execute decompiler.jar 
+to run the translator:
+
+java -jar decompiler.jar test.s
+
+The single argument is the .s file’s path. The .ll file will be saved to the same folder, where the source file is located.
+
+
+Execution from command line:
+
+
+1. Compile .java files with the use of external .jar files located in /lib:
+
+mkdir bin; javac -d bin -cp lib/\* -sourcepath src src/main/main.java
+
+Afterwards, all .class files are located in /bin
+
+
+2. Run the translator:
+
+java -cp bin:.:lib/\* main.Main aes.s
+
+
+======= This file explains how you write a ".c" file of your own and go through all the steps 
+to validate the design in the binary to LLVM translation project =======
+
+
+1. Write a .c file, say test.c
+
+2. Compile test.c into simplescalar binary test.o
+
+	sslittle-na-sstrix-gcc.cde -o test.o test.c
+
+3. Disassemble binary test.o into test.s
+
+	sslittle-na-sstrix-objdump.cde -d test.o > test.s
+
+4. Run the translator (depends on the design of translator) to produce LLVM code test.ll
+
+	<Translator> test.s > test.ll
+
+5. Run LLVM assembler to produce LLVM bitcode test.bc
+
+	llvm-as test.ll (this will produce test.bc)
+
+	#note: if the translation is wrong, the assembler will fail to produce test.bc
+
+6. Run simplescalar binary:
+
+	sim-outorder test.o (this should run without failure)
+
+7. Run LLVM bitcode
+
+	klee --write-smt2s test.bc (this should run without failure)
+
+	#note: if the translation is wrong, this step might generate unpredictable output, such as crashes
+
+
+#### The goal is to compare executions in step 6 and step 7. They should produce 
+a. Same number of memory accesses, b. Same sequence of memory accesses ####
+
+
+
